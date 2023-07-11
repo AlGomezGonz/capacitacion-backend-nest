@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pet } from './entities/pet.entity';
@@ -11,30 +11,16 @@ export class PetsService {
     @InjectRepository(Human) private humansRepository: Repository<Human>,
   ) {}
 
-  async create(body: Pet, human_id: number) {
-    const human = await this.humansRepository.findOne({
-      where: { id: human_id },
-    });
-
-    if (!human) {
-      throw new NotFoundException('Human not found');
-    }
-
+  async create(body: Pet, human: Human) {
     const newPet = this.petsRepository.create(body);
     newPet.human = human;
 
     return this.petsRepository.save(newPet);
   }
 
-  async findAll(human_id: number) {
-    const human = await this.humansRepository.findOne({
-      where: { id: human_id },
-    });
-    if (!human) {
-      throw new NotFoundException('Human not found');
-    }
+  async findAll(human: Human) {
     return this.petsRepository.find({
-      where: { human: { id: human_id } },
+      where: { human: { id: human.id } },
     });
   }
 
@@ -44,9 +30,9 @@ export class PetsService {
 
   async update(id: number, body: Pet) {
     const pet = await this.petsRepository.findOne({ where: { id } });
-    this.petsRepository.merge(pet, body);
-
-    return this.petsRepository.update(id, pet);
+    const newPet = this.petsRepository.merge(pet, body);
+    await this.petsRepository.update(id, pet);
+    return newPet;
   }
 
   async remove(id: number) {

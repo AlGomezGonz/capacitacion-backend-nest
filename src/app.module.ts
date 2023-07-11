@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
 import { HumansModule } from './humans/humans.module';
 import { PetsModule } from './pets/pets.module';
+import { humanMiddleware } from './common/middleware/human.middleware';
 
 config();
 
@@ -27,4 +28,8 @@ const configService = new ConfigService();
     PetsModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer) {
+    consumer.apply(humanMiddleware).forRoutes('humans/:id*');
+  }
+}

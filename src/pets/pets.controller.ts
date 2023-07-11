@@ -9,19 +9,21 @@ import {
 } from '@nestjs/common';
 import { PetsService } from './pets.service';
 import { Pet } from './entities/pet.entity';
+import { HumanDecorator } from 'src/decorators/human.decorator';
+import { Human } from 'src/humans/entities/human.entity';
 
 @Controller('humans/:id/pets')
 export class PetsController {
   constructor(private petsService: PetsService) {}
 
   @Post()
-  create(@Body() body: Pet, @Param('id') human_id: number) {
-    return this.petsService.create(body, human_id);
+  create(@Body() body: Pet, @HumanDecorator('human') human: Human) {
+    return this.petsService.create(body, human);
   }
 
   @Get()
-  findAll(@Param('id') human_id: number) {
-    return this.petsService.findAll(human_id);
+  findAll(@HumanDecorator('human') human: Human) {
+    return this.petsService.findAll(human);
   }
 
   @Get(':id')

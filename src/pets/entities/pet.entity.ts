@@ -35,7 +35,7 @@ export class Pet {
   })
   updated_at: Date;
 
-  @ManyToOne(() => Human, (human) => human.pets)
+  @ManyToOne(() => Human, (human) => human.pets, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'human_id' })
   human: Human;
 }

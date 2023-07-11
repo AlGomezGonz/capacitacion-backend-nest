@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Human } from './entities/human.entity';
@@ -18,26 +18,14 @@ export class HumansService {
     return this.humansRepository.find({ relations: ['pets'] });
   }
 
-  async findOne(id: number) {
-    const human = await this.humansRepository.findOne({
-      where: { id },
-      relations: ['pets'],
-    });
-    if (!human) {
-      throw new NotFoundException('Human not found');
-    }
-    return human;
+  async update(id: number, body: Human, human: Human) {
+    const newHuman = this.humansRepository.merge(human, body);
+    await this.humansRepository.update(id, newHuman);
+    return newHuman;
   }
 
-  async update(id: number, body: Human) {
-    const human = await this.humansRepository.findOne({ where: { id } });
-    this.humansRepository.merge(human, body);
-    return this.humansRepository.update(id, human);
-  }
-
-  async remove(id: number) {
-    const deletedHuman = this.humansRepository.findOne({ where: { id } });
+  async remove(id: number, human: Human) {
     await this.humansRepository.delete(id);
-    return deletedHuman;
+    return human;
   }
 }
