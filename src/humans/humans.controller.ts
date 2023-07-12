@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Response,
 } from '@nestjs/common';
 import { HumansService } from './humans.service';
 import { Human } from './entities/human.entity';
@@ -27,9 +26,8 @@ export class HumansController {
   }
 
   @Get(':id')
-  findOne(@Response() res) {
-    const { human } = res.locals;
-    res.send(human);
+  findOne(@HumanDecorator('human') human: Human) {
+    return human;
   }
 
   @Patch(':id')

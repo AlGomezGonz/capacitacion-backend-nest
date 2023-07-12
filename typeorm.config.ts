@@ -6,8 +6,6 @@ config();
 
 const configService = new ConfigService();
 
-console.log(configService);
-
 export default new DataSource({
   type: 'postgres',
   host: configService.get('POSTGRES_HOST'),
