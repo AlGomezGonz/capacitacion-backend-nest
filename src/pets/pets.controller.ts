@@ -12,7 +12,7 @@ import { PetsService } from './pets.service';
 import { Pet } from './entities/pet.entity';
 import { HumanDecorator } from 'src/decorators/human.decorator';
 import { Human } from 'src/humans/entities/human.entity';
-import { JwtAuthGuard } from 'src/auth/jwtAuth.guard';
+import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
 
 @Controller('humans/:id/pets')
 export class PetsController {
@@ -36,7 +36,7 @@ export class PetsController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: number, @Body() body: any) {
+  update(@Param('id') id: number, @Body() body: Partial<Pet>) {
     return this.petsService.update(id, body);
   }
 

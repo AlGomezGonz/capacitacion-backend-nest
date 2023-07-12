@@ -18,7 +18,7 @@ export class HumansService {
     return this.humansRepository.find({ relations: ['pets'] });
   }
 
-  async update(id: number, body: Human, human: Human) {
+  async update(id: number, body: Partial<Human>, human: Human) {
     const newHuman = this.humansRepository.merge(human, body);
     await this.humansRepository.update(id, newHuman);
     return newHuman;

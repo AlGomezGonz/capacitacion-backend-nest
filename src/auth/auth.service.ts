@@ -36,7 +36,7 @@ export class AuthService {
     return result;
   }
 
-  async login(user: any) {
+  async login(user: Partial<User>) {
     const currentUser = await this.usersService.finOne(user.email);
 
     const payload = {
@@ -51,7 +51,7 @@ export class AuthService {
     };
   }
 
-  async register(data: any): Promise<Omit<User, 'password'> | undefined> {
+  async register(data: Partial<User>) {
     const hash = await bcrypt.hash(data.password, 10);
 
     const response = await this.usersService.create({

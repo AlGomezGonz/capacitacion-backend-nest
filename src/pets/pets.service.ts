@@ -28,7 +28,7 @@ export class PetsService {
     return this.petsRepository.findOne({ where: { id }, relations: ['human'] });
   }
 
-  async update(id: number, body: Pet) {
+  async update(id: number, body: Partial<Pet>) {
     const pet = await this.petsRepository.findOne({ where: { id } });
     const newPet = this.petsRepository.merge(pet, body);
     await this.petsRepository.update(id, pet);

@@ -9,8 +9,9 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  async create(data) {
-    return await this.usersRepository.save(data).then((res) => res);
+  async create(data: Partial<User>) {
+    const user = this.usersRepository.create(data);
+    return this.usersRepository.save(user);
   }
 
   finOne(email: string) {

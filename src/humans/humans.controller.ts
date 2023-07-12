@@ -33,7 +33,7 @@ export class HumansController {
   @Patch(':id')
   update(
     @Param('id') id: number,
-    @Body() body: any,
+    @Body() body,
     @HumanDecorator('human') human: Human,
   ) {
     return this.humansService.update(id, body, human);
