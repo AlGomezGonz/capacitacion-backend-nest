@@ -4,6 +4,11 @@ import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
 import { HumansModule } from './humans/humans.module';
 import { PetsModule } from './pets/pets.module';
+import { humanMiddleware } from './common/middleware/human.middleware';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 config();
 
@@ -25,6 +30,18 @@ const configService = new ConfigService();
     }),
     HumansModule,
     PetsModule,
+    AuthModule,
+    UsersModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuthInterceptor,
+    },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer) {
+    consumer.apply(humanMiddleware).forRoutes('humans/:id*');
+  }
+}

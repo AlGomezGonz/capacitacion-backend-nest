@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { HumansService } from './humans.service';
 import { Human } from './entities/human.entity';
+import { HumanDecorator } from 'src/decorators/human.decorator';
 
 @Controller('humans')
 export class HumansController {
@@ -25,17 +26,21 @@ export class HumansController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.humansService.findOne(id);
+  findOne(@HumanDecorator('human') human: Human) {
+    return human;
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() body: any) {
-    return this.humansService.update(id, body);
+  update(
+    @Param('id') id: number,
+    @Body() body: any,
+    @HumanDecorator('human') human: Human,
+  ) {
+    return this.humansService.update(id, body, human);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.humansService.remove(id);
+  remove(@Param('id') id: number, @HumanDecorator('human') human: Human) {
+    return this.humansService.remove(id, human);
   }
 }

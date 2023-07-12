@@ -2,15 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
-import { Human } from 'src/humans/entities/human.entity';
 
 @Entity()
-export class Pet {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,10 +14,10 @@ export class Pet {
   name: string;
 
   @Column()
-  age: number;
+  email: string;
 
   @Column()
-  type: string;
+  password: string;
 
   @CreateDateColumn({
     name: 'created_at',
@@ -29,13 +25,9 @@ export class Pet {
   })
   created_at: Date;
 
-  @UpdateDateColumn({
+  @CreateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
   })
   updated_at: Date;
-
-  @ManyToOne(() => Human, (human) => human.pets, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'human_id' })
-  human: Human;
 }
