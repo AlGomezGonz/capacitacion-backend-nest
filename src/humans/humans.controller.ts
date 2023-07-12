@@ -10,13 +10,15 @@ import {
 import { HumansService } from './humans.service';
 import { Human } from './entities/human.entity';
 import { HumanDecorator } from 'src/decorators/human.decorator';
+import { CreateHumanDto } from './dto/create-human.dto';
+import { UpdateHumanDto } from './dto/update-human.dto';
 
 @Controller('humans')
 export class HumansController {
   constructor(private humansService: HumansService) {}
 
   @Post()
-  create(@Body() body: Human) {
+  create(@Body() body: CreateHumanDto) {
     return this.humansService.create(body);
   }
 
@@ -33,7 +35,7 @@ export class HumansController {
   @Patch(':id')
   update(
     @Param('id') id: number,
-    @Body() body,
+    @Body() body: UpdateHumanDto,
     @HumanDecorator('human') human: Human,
   ) {
     return this.humansService.update(id, body, human);

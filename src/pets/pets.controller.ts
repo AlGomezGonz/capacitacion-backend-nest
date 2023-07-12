@@ -9,10 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PetsService } from './pets.service';
-import { Pet } from './entities/pet.entity';
 import { HumanDecorator } from 'src/decorators/human.decorator';
 import { Human } from 'src/humans/entities/human.entity';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
+import { CreatePetDto } from './dto/create-pet.dto';
+import { UpdatePetDto } from './dto/update-pet.dto';
 
 @Controller('humans/:id/pets')
 export class PetsController {
@@ -20,7 +21,7 @@ export class PetsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body: Pet, @HumanDecorator('human') human: Human) {
+  create(@Body() body: CreatePetDto, @HumanDecorator('human') human: Human) {
     return this.petsService.create(body, human);
   }
 
@@ -36,7 +37,7 @@ export class PetsController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: number, @Body() body: Partial<Pet>) {
+  update(@Param('id') id: number, @Body() body: UpdatePetDto) {
     return this.petsService.update(id, body);
   }
 

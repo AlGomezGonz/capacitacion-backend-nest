@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 
@@ -51,7 +52,7 @@ export class AuthService {
     };
   }
 
-  async register(data: Partial<User>) {
+  async register(data: CreateUserDto) {
     const hash = await bcrypt.hash(data.password, 10);
 
     const response = await this.usersService.create({
