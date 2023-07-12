@@ -3,15 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pet } from './entities/pet.entity';
 import { Human } from 'src/humans/entities/human.entity';
+import { CreatePetDto } from './dto/create-pet.dto';
+import { UpdatePetDto } from './dto/update-pet.dto';
 
 @Injectable({})
 export class PetsService {
-  constructor(
-    @InjectRepository(Pet) private petsRepository: Repository<Pet>,
-    @InjectRepository(Human) private humansRepository: Repository<Human>,
-  ) {}
+  constructor(@InjectRepository(Pet) private petsRepository: Repository<Pet>) {}
 
-  async create(body: Pet, human: Human) {
+  async create(body: CreatePetDto, human: Human) {
     const newPet = this.petsRepository.create(body);
     newPet.human = human;
 
@@ -28,7 +27,7 @@ export class PetsService {
     return this.petsRepository.findOne({ where: { id }, relations: ['human'] });
   }
 
-  async update(id: number, body: Pet) {
+  async update(id: number, body: UpdatePetDto) {
     const pet = await this.petsRepository.findOne({ where: { id } });
     const newPet = this.petsRepository.merge(pet, body);
     await this.petsRepository.update(id, pet);

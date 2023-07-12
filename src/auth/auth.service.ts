@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 
@@ -36,7 +37,7 @@ export class AuthService {
     return result;
   }
 
-  async login(user: any) {
+  async login(user: Partial<User>) {
     const currentUser = await this.usersService.finOne(user.email);
 
     const payload = {
@@ -51,7 +52,7 @@ export class AuthService {
     };
   }
 
-  async register(data: any): Promise<Omit<User, 'password'> | undefined> {
+  async register(data: CreateUserDto) {
     const hash = await bcrypt.hash(data.password, 10);
 
     const response = await this.usersService.create({

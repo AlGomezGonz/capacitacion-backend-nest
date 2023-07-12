@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Human } from './entities/human.entity';
+import { CreateHumanDto } from './dto/create-human.dto';
+import { UpdateHumanDto } from './dto/update-human.dto';
 
 @Injectable()
 export class HumansService {
@@ -9,7 +11,7 @@ export class HumansService {
     @InjectRepository(Human) private humansRepository: Repository<Human>,
   ) {}
 
-  create(body: Human) {
+  create(body: CreateHumanDto) {
     const human = this.humansRepository.create(body);
     return this.humansRepository.save(human);
   }
@@ -18,7 +20,7 @@ export class HumansService {
     return this.humansRepository.find({ relations: ['pets'] });
   }
 
-  async update(id: number, body: Human, human: Human) {
+  async update(id: number, body: UpdateHumanDto, human: Human) {
     const newHuman = this.humansRepository.merge(human, body);
     await this.humansRepository.update(id, newHuman);
     return newHuman;
