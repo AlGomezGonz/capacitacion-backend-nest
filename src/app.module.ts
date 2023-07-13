@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { config } from 'dotenv';
-import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { HumansModule } from './humans/humans.module';
 import { PetsModule } from './pets/pets.module';
 import { humanMiddleware } from './common/middleware/human.middleware';
@@ -9,22 +7,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthInterceptor } from './auth/auth.interceptor';
-
-config();
-
-const configService = new ConfigService();
+import dbconfig from './database/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: configService.get('POSTGRES_HOST'),
-      port: configService.get('POSTGRES_PORT'),
-      username: configService.get('POSTGRES_USER'),
-      password: configService.get('POSTGRES_PASSWORD'),
-      database: configService.get('POSTGRES_DB'),
-      entities: ['dist/**/*.entity.{ts,js}'],
-      synchronize: false,
+      ...(dbconfig as TypeOrmModuleOptions),
       retryDelay: 3000,
       retryAttempts: 10,
     }),
