@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pet } from './entities/pet.entity';
@@ -29,6 +29,9 @@ export class PetsService {
 
   async update(id: number, body: UpdatePetDto) {
     const pet = await this.petsRepository.findOne({ where: { id } });
+    if (!pet) {
+      throw new NotFoundException(`Pet with id ${id} not found`);
+    }
     const newPet = this.petsRepository.merge(pet, body);
     await this.petsRepository.update(id, pet);
     return newPet;
@@ -36,6 +39,9 @@ export class PetsService {
 
   async remove(id: number) {
     const deletedPet = await this.petsRepository.findOne({ where: { id } });
+    if (!deletedPet) {
+      throw new NotFoundException(`Pet with id ${id} not found`);
+    }
     await this.petsRepository.delete(id);
     return deletedPet;
   }
