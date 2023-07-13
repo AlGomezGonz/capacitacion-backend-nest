@@ -1,0 +1,67 @@
+{
+  "humans": [
+    {
+      "name": "Guillermo",
+      "lastname": "Gonzalez",
+      "age": 38,
+      "nickname": "Guille"
+    },
+    {
+      "name": "Gonzalo",
+      "lastname": "Faraone",
+      "age": 38,
+      "nickname": "Gonza"
+    },
+    {
+      "name": "Carla",
+      "lastname": "Joumier",
+      "age": 25,
+      "nickname": "Car"
+    },
+    {
+      "name": "Nicolas",
+      "lastname": "Lukestik",
+      "age": 24,
+      "nickname": "Luke"
+    }
+  ],
+  "pets": [
+    {
+      "name": "Boris",
+      "type": "Perro",
+      "age": 4
+    },
+    {
+      "name": "Leia",
+      "type": "Perro",
+      "age": 4
+    },
+    {
+      "name": "Naranjoso",
+      "type": "Gato",
+      "age": 1
+    },
+    {
+      "name": "Dalí",
+      "type": "Gato",
+      "age": 3
+    },
+    {
+      "name": "Gala",
+      "type": "Gato",
+      "age": 3
+    },
+    {
+      "name": "Ringo",
+      "type": "Perro",
+      "age": 4
+    }
+  ],
+  "users": [
+    {
+      "email": "agomez@litebox.ai",
+      "password": "1234",
+      "name": "Alexandra"
+    }
+  ]
+}
